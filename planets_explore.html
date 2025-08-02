@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planetary Exploration Mission </title>
+    <style>
+        :root {
+            --space-dark: #0b0d1f;
+            --space-blue: #1a237e;
+            --space-light: #4fc3f7;
+            --planet-orange: #ff8f00;
+            --planet-purple: #7b1fa2;
+            --star-yellow: #ffd600;
+            --nebula-pink: #e91e63;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--space-dark), var(--space-blue));
+            color: #fff;
+            line-height: 1.6;
+            padding: 20px;
+            background-attachment: fixed;
+            background-size: cover;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            padding: 30px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .stars {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+        
+        .star {
+            position: absolute;
+            background-color: white;
+            border-radius: 50%;
+            animation: twinkle 3s infinite;
+        }
+        
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.2; }
+            50% { opacity: 1; }
+        }
+        
+        h1 {
+            font-size: 3.5rem;
+            margin-bottom: 15px;
+            color: var(--star-yellow);
+            text-shadow: 0 0 15px rgba(255, 214, 0, 0.7);
+            position: relative;
+        }
+        
+        .subtitle {
+            font-size: 1.5rem;
+            color: var(--space-light);
+            max-width: 800px;
+            margin: 0 auto 30px;
+        }
+        
+        .planet-system {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 200px;
+            margin: 40px 0;
+            position: relative;
+        }
+        
+        .sun {
+            width: 80px;
+            height: 80px;
+            background: radial-gradient(circle, var(--star-yellow), #ff6d00);
+            border-radius: 50%;
+            box-shadow: 0 0 50px var(--star-yellow);
+            position: absolute;
+            z-index: 1;
+        }
+        
+        .orbit {
+            position: absolute;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation: orbit linear infinite;
+        }
+        
+        .planet {
+            position: absolute;
+            border-radius: 50%;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .mercury { 
+            width: 20px; 
+            height: 20px; 
+            background: linear-gradient(135deg, #9e9e9e, #616161);
+            animation-duration: 4s;
+        }
+        
+        .venus { 
+            width: 30px; 
+            height: 30px; 
+            background: linear-gradient(135deg, #ffab91, #e64a19);
+            animation-duration: 8s;
+        }
+        
+        .earth { 
+            width: 35px; 
+            height: 35px; 
+            background: linear-gradient(135deg, #81d4fa, #0288d1);
+            animation-duration: 12s;
+        }
+        
+        .mars { 
+            width: 25px; 
+            height: 25px; 
+            background: linear-gradient(135deg, #ef9a9a, #c62828);
+            animation-duration: 20s;
+        }
+        
+        @keyframes orbit {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        .orbit:nth-child(2) { width: 150px; height: 150px; }
+        .orbit:nth-child(3) { width: 230px; height: 230px; }
+        .orbit:nth-child(4) { width: 310px; height: 310px; }
+        .orbit:nth-child(5) { width: 390px; height: 390px; }
+        
+        section {
+            background: rgba(15, 20, 60, 0.7);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(100, 150, 255, 0.2);
+        }
+        
+        h2 {
+            color: var(--space-light);
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--planet-purple);
+            font-size: 2.2rem;
+        }
+        
+        h3 {
+            color: var(--planet-orange);
+            margin: 20px 0 15px;
+            font-size: 1.5rem;
+        }
+        
+        /* Planet Table Styles */
+        .planets-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: rgba(30, 40, 100, 0.5);
+        }
+        
+        .planets-table th {
+            background: var(--planet-purple);
+            color: white;
+            padding: 15px;
+            text-align: left;
+        }
+        
+        .planets-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid rgba(100, 150, 255, 0.2);
+        }
+        
+        .planets-table tr:nth-child(even) {
+            background: rgba(25, 35, 90, 0.4);
+        }
+        
+        .planets-table tr:hover {
+            background: rgba(50, 70, 150, 0.4);
+        }
+        
+        /* Mission Timeline */
+        .timeline {
+            position: relative;
+            max-width: 800px;
+            margin: 40px auto;
+        }
+        
+        .timeline::after {
+            content: '';
+            position: absolute;
+            width: 4px;
+            background: var(--space-light);
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            margin-left: -2px;
+        }
+        
+        .timeline-item {
+            padding: 20px 40px;
+            position: relative;
+            width: 50%;
+            box-sizing: border-box;
+        }
+        
+        .timeline-item:nth-child(odd) {
+            left: 0;
+        }
+        
+        .timeline-item:nth-child(even) {
+            left: 50%;
+        }
+        
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: var(--planet-orange);
+            border-radius: 50%;
+            top: 25px;
+            z-index: 1;
+        }
+        
+        .timeline-item:nth-child(odd)::after {
+            right: -10px;
+        }
+        
+        .timeline-item:nth-child(even)::after {
+            left: -10px;
+        }
+        
+        .timeline-content {
+            padding: 20px;
+            background: rgba(50, 70, 150, 0.4);
+            border-radius: 10px;
+            border: 1px solid var(--space-light);
+        }
+        
+        /* Equipment List */
+        .equipment-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .equipment-card {
+            background: rgba(40, 50, 120, 0.5);
+            border-radius: 10px;
+            padding: 20px;
+            border: 1px solid var(--space-light);
+            transition: transform 0.3s ease;
+        }
+        
+        .equipment-card:hover {
+            transform: translateY(-5px);
+            background: rgba(50, 70, 150, 0.6);
+        }
+        
+        .equipment-card h4 {
+            color: var(--star-yellow);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .equipment-card h4::before {
+            content: "➤";
+            margin-right: 10px;
+            color: var(--planet-orange);
+        }
+        
+        /* Media Gallery */
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
+        }
+        
+        .media-card {
+            background: rgba(30, 40, 100, 0.5);
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid var(--space-light);
+        }
+        
+        .media-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            display: block;
+        }
+        
+        .media-card .caption {
+            padding: 15px;
+        }
+        
+        /* Mission Signup Form */
+        .mission-form {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--space-light);
+            font-weight: 500;
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border-radius: 8px;
+            border: 1px solid var(--space-light);
+            background: rgba(20, 30, 70, 0.7);
+            color: white;
+            font-size: 16px;
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--planet-orange);
+            box-shadow: 0 0 10px rgba(255, 143, 0, 0.5);
+        }
+        
+        .radio-group, .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 8px;
+        }
+        
+        .radio-option, .checkbox-option {
+            display: flex;
+            align-items: center;
+        }
+        
+        .radio-option input, .checkbox-option input {
+            width: auto;
+            margin-right: 8px;
+        }
+        
+        button {
+            background: linear-gradient(135deg, var(--planet-orange), var(--nebula-pink));
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            grid-column: span 2;
+            justify-self: center;
+            width: 300px;
+            margin-top: 20px;
+        }
+        
+        button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(233, 30, 99, 0.7);
+        }
+        
+        .required::after {
+            content: " *";
+            color: var(--nebula-pink);
+        }
+        
+        footer {
+            text-align: center;
+            padding: 30px 0;
+            color: var(--space-light);
+            margin-top: 50px;
+            border-top: 1px solid rgba(100, 150, 255, 0.2);
+        }
+        
+        @media (max-width: 768px) {
+            .timeline::after {
+                left: 31px;
+            }
+            
+            .timeline-item {
+                width: 100%;
+                padding-left: 70px;
+                padding-right: 25px;
+                left: 0 !important;
+            }
+            
+            .timeline-item::after {
+                left: 20px !important;
+            }
+            
+            h1 {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="stars" id="stars-container"></div>
+            <h1>Planetary Exploration Mission</h1>
+            <p class="subtitle">Join humanity's next giant leap into the cosmos. Explore distant worlds and expand our understanding of the universe.</p>
+            
+            <div class="planet-system">
+                <div class="sun"></div>
+                <div class="orbit"><div class="planet mercury"></div></div>
+                <div class="orbit"><div class="planet venus"></div></div>
+                <div class="orbit"><div class="planet earth"></div></div>
+                <div class="orbit"><div class="planet mars"></div></div>
+            </div>
+        </header>
+        
+        <section id="planets">
+            <h2>Our Solar System</h2>
+            <p>Explore the diverse worlds in our cosmic neighborhood. Each planet offers unique challenges and opportunities for exploration.</p>
+            
+            <table class="planets-table">
+                <thead>
+                    <tr>
+                        <th>Planet</th>
+                        <th>Type</th>
+                        <th>Diameter</th>
+                        <th>Distance from Sun</th>
+                        <th>Exploration Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Mercury</td>
+                        <td>Terrestrial</td>
+                        <td>4,879 km</td>
+                        <td>57.9 million km</td>
+                        <td>Mapped by MESSENGER</td>
+                    </tr>
+                    <tr>
+                        <td>Venus</td>
+                        <td>Terrestrial</td>
+                        <td>12,104 km</td>
+                        <td>108.2 million km</td>
+                        <td>Multiple flybys, landings</td>
+                    </tr>
+                    <tr>
+                        <td>Earth</td>
+                        <td>Terrestrial</td>
+                        <td>12,742 km</td>
+                        <td>149.6 million km</td>
+                        <td>Home planet</td>
+                    </tr>
+                    <tr>
+                        <td>Mars</td>
+                        <td>Terrestrial</td>
+                        <td>6,779 km</td>
+                        <td>227.9 million km</td>
+                        <td>Rovers and orbiters active</td>
+                    </tr>
+                    <tr>
+                        <td>Jupiter</td>
+                        <td>Gas Giant</td>
+                        <td>139,820 km</td>
+                        <td>778.5 million km</td>
+                        <td>Studied by Juno spacecraft</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+        
+        <section id="timeline">
+            <h2>Mission Timeline</h2>
+            <p>The journey to explore our solar system follows a carefully planned sequence of milestones:</p>
+            
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <h3>Phase 1: Preparation (2025-2027)</h3>
+                        <p>Crew selection and training, spacecraft construction, and system testing</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <h3>Phase 2: Earth Orbit Testing (2028)</h3>
+                        <p>Extended stay in Earth orbit to validate life support systems</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <h3>Phase 3: Lunar Gateway (2029)</h3>
+                        <p>Establishment of lunar orbital station as a staging point</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <h3>Phase 4: Mars Mission (2030-2033)</h3>
+                        <p>First crewed mission to the Martian system with surface exploration</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="equipment">
+            <h2>Exploration Equipment</h2>
+            <p>Our missions utilize cutting-edge technology designed for the harsh environments of space:</p>
+            
+            <div class="equipment-grid">
+                <div class="equipment-card">
+                    <h4>Orion Spacecraft</h4>
+                    <p>Next-generation crew vehicle for deep space exploration with advanced life support systems.</p>
+                </div>
+                <div class="equipment-card">
+                    <h4>Mars Surface Habitat</h4>
+                    <p>Inflatable living modules with radiation shielding for extended stays on the Martian surface.</p>
+                </div>
+                <div class="equipment-card">
+                    <h4>ROV-X Exploration Rover</h4>
+                    <p>Pressurized vehicle with 200km range for planetary surface exploration.</p>
+                </div>
+                <div class="equipment-card">
+                    <h4>Advanced Spacesuits</h4>
+                    <p>Next-gen suits with enhanced mobility, radiation protection, and 8-hour life support.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section id="media">
+            <h2>Mission Media Gallery</h2>
+            <p>Explore visuals from previous missions and concept art for our upcoming expeditions:</p>
+            
+            <div class="gallery">
+                <div class="media-card">
+                    <img src="https://images.unsplash.com/photo-1454789548928-9efd52dc4031?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Mars surface landscape">
+                    <div class="caption">
+                        <h3>Martian Landscape</h3>
+                        <p>Vista from Perseverance rover showing Jezero Crater</p>
+                    </div>
+                </div>
+                <div class="media-card">
+                    <img src="https://images.unsplash.com/photo-1464802686167-b939a6910659?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Spacecraft in orbit">
+                    <div class="caption">
+                        <h3>Orion Spacecraft</h3>
+                        <p>Artist rendering of spacecraft approaching lunar orbit</p>
+                    </div>
+                </div>
+                <div class="media-card">
+                    <img src="https://images.unsplash.com/photo-1505506874110-6a7a69069a08?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Astronaut on Mars">
+                    <div class="caption">
+                        <h3>Surface Operations</h3>
+                        <p>Concept art of astronaut conducting research on Mars</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div style="margin-top: 30px; text-align: center;">
+                <audio controls style="width: 100%; max-width: 500px; margin: 0 auto;">
+                    <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+                    Your browser does not support the audio element.
+                </audio>
+                <p>Mission control communications sample</p>
+            </div>
+        </section>
+        
+        <section id="signup">
+            <h2>Mission Signup Application</h2>
+            <p>Apply to join our next planetary exploration mission. All fields are required unless marked optional.</p>
+            
+            <form class="mission-form" id="missionForm">
+                <div class="form-group">
+                    <label for="fullname" class="required">Full Name</label>
+                    <input type="text" id="fullname" name="fullname" required minlength="5" placeholder="Enter your full name">
+                </div>
+                
+                <div class="form-group">
+                    <label for="email" class="required">Email Address</label>
+                    <input type="email" id="email" name="email" required placeholder="your.email@example.com">
+                </div>
+                
+                <div class="form-group">
+                    <label for="dob" class="required">Date of Birth</label>
+                    <input type="date" id="dob" name="dob" required max="2007-01-01">
+                </div>
+                
+                <div class="form-group">
+                    <label for="nationality">Nationality</label>
+                    <select id="nationality" name="nationality">
+                        <option value="">Select your country</option>
+                        <option value="us">United States</option>
+                        <option value="ca">Canada</option>
+                        <option value="uk">United Kingdom</option>
+                        <option value="eu">European Union</option>
+                        <option value="jp">Japan</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="mission-type" class="required">Preferred Mission Type</label>
+                    <div class="radio-group">
+                        <label class="radio-option">
+                            <input type="radio" name="mission-type" value="orbital" required> Orbital Research
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="mission-type" value="surface"> Surface Exploration
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="mission-type" value="technical"> Technical Specialist
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="experience" class="required">Years of Experience</label>
+                    <input type="number" id="experience" name="experience" min="5" max="50" required placeholder="Minimum 5 years">
+                </div>
+                
+                <div class="form-group">
+                    <label for="planet" class="required">Destination Preference</label>
+                    <select id="planet" name="planet" required>
+                        <option value="">Select preferred destination</option>
+                        <option value="moon">Earth's Moon</option>
+                        <option value="mars">Mars</option>
+                        <option value="europa">Jupiter's Europa</option>
+                        <option value="titan">Saturn's Titan</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="skills">Specialized Skills</label>
+                    <div class="checkbox-group">
+                        <label class="checkbox-option">
+                            <input type="checkbox" name="skills" value="piloting"> Piloting
+                        </label>
+                        <label class="checkbox-option">
+                            <input type="checkbox" name="skills" value="engineering"> Engineering
+                        </label>
+                        <label class="checkbox-option">
+                            <input type="checkbox" name="skills" value="medical"> Medical
+                        </label>
+                        <label class="checkbox-option">
+                            <input type="checkbox" name="skills" value="geology"> Geology
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="availability" class="required">Available for long-duration mission?</label>
+                    <select id="availability" name="availability" required>
+                        <option value="">Select availability</option>
+                        <option value="yes">Yes (2+ years)</option>
+                        <option value="maybe">Possibly (1-2 years)</option>
+                        <option value="no">Short-term only</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="bio">Personal Bio</label>
+                    <textarea id="bio" name="bio" rows="4" placeholder="Tell us about your background, motivation, and why you want to join this mission"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="reference">Reference Code (if applicable)</label>
+                    <input type="text" id="reference" name="reference" pattern="[A-Z]{3}-[0-9]{4}" placeholder="Format: ABC-1234">
+                    <small>If you have a referral code, enter it in the format XXX-1234</small>
+                </div>
+                
+                <div class="form-group">
+                    <label for="username">Username (optional)</label>
+                    <input type="text" id="username" name="username" readonly value="Will be auto-generated">
+                </div>
+                
+                <button type="submit">Submit Application</button>
+            </form>
+        </section>
+        
+        <footer>
+            <p>Planetary Exploration Mission Initiative &copy; 2025 | Expanding Human Horizons</p>
+            <p>This is a demonstration of HTML5 content elements and form capabilities</p>
+        </footer>
+    </div>
+    
+    <script>
+        // Create stars for the background
+        const starsContainer = document.getElementById('stars-container');
+        for (let i = 0; i < 150; i++) {
+            const star = document.createElement('div');
+            star.classList.add('star');
+            star.style.left = `${Math.random() * 100}%`;
+            star.style.top = `${Math.random() * 100}%`;
+            star.style.width = `${Math.random() * 3}px`;
+            star.style.height = star.style.width;
+            star.style.animationDelay = `${Math.random() * 5}s`;
+            starsContainer.appendChild(star);
+        }
+        
+        // Form validation feedback
+        const form = document.getElementById('missionForm');
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            if (form.checkValidity()) {
+                alert('Application submitted successfully! Thank you for your interest in the Planetary Exploration Mission.');
+                form.reset();
+            } else {
+                alert('Please fill out all required fields correctly.');
+            }
+        });
+    </script>
+</body>
+</html>
